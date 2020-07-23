@@ -53,6 +53,7 @@ public class movcar : MonoBehaviour
         
     }*/
     public Text Result;
+    public Text TiempoDia;
     public string resultado;
     public string pais;
     public GameObject inputField;
@@ -67,6 +68,7 @@ public class movcar : MonoBehaviour
     public void storeName()
     {
         pais = inputField.GetComponent<Text>().text;
+        TiempoDia.text = pais;
         StartCoroutine(GetRequest("http://api.timezonedb.com/v2.1/get-time-zone?key=SQU3IIYRYDLP&format=json&by=zone&zone="+pais));
         //StartCoroutine(GetRequest("http://api.timezonedb.com/v2.1/get-time-zone?key=SQU3IIYRYDLP&format=json&by=zone&zone=America/Argentina/Buenos_Aires"));
     }
