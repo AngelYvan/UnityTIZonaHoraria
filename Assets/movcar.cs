@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Globalization;
 using System.Security.Permissions;
+using System;
 
 public class movcar : MonoBehaviour
 {
@@ -54,6 +55,7 @@ public class movcar : MonoBehaviour
     }*/
     public Text Result;
     public Text TiempoDia;
+    public Dropdown dropdown;
     public string resultado;
     public string pais;
     public GameObject inputField;
@@ -67,7 +69,8 @@ public class movcar : MonoBehaviour
     }*/
     public void storeName()
     {
-        pais = inputField.GetComponent<Text>().text;
+        pais = inputField.GetComponent<Text>().text.Trim() == "" ? dropdown.options[dropdown.value].text.ToString(): inputField.GetComponent<Text>().text.Trim();
+        inputField.GetComponent<Text>().text = dropdown.options[dropdown.value].text.ToString();
         TiempoDia.text = pais;
         StartCoroutine(GetRequest("http://api.timezonedb.com/v2.1/get-time-zone?key=SQU3IIYRYDLP&format=json&by=zone&zone="+pais));
         //StartCoroutine(GetRequest("http://api.timezonedb.com/v2.1/get-time-zone?key=SQU3IIYRYDLP&format=json&by=zone&zone=America/Argentina/Buenos_Aires"));
@@ -81,8 +84,31 @@ public class movcar : MonoBehaviour
             // Request and wait for the desired page.
             yield return webRequest.SendWebRequest();
             string temp = webRequest.downloadHandler.text;
-            resultado = "" + temp.Substring(temp.LastIndexOf(" ") + 1, 2); ;
-            Result.text = "" + temp.Substring(temp.LastIndexOf(" ") + 1, 8); ;
+            resultado = "" + temp.Substring(temp.LastIndexOf(" ") + 1, 2); 
+            Result.text = "" + temp.Substring(temp.LastIndexOf(" ") + 1, 8);
+            try
+            {
+                int hora = Int32.Parse("" + temp.Substring(temp.LastIndexOf(" ") + 1, 2)); 
+                if(hora >= 6 && hora < 12) {
+                    TiempoDia.text = "Mañana";
+                }else if(hora>=12 && hora < 19)
+                {
+                    TiempoDia.text = "Tarde";
+                }
+                else if (hora >= 0 && hora < 6)
+                {
+                    TiempoDia.text = "Madrugada";
+                }
+                else
+                {
+                    TiempoDia.text = "Noche";
+                }
+            }
+            catch (Exception)
+            {
+                TiempoDia.text = "Indefinido";
+            }
+
             /*string[] datos = webRequest.downloadHandler.text.Split(',');
             string[] datos1 = datos[12].Split(' ');
             string[] datos2 = datos1[1].Split(':');
