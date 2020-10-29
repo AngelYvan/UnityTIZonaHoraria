@@ -44,18 +44,22 @@ public class movcar : MonoBehaviour
 
         switch (clima) {
             case "Soleado":
+                weather_Controller.ExitCurrentWeather(1);
                 weather_Controller.ChangeWeatherToSun();
                 weather_Controller.Update();
                 break;
             case "Lluvia":
+                weather_Controller.ExitCurrentWeather(3);
                 weather_Controller.ChangeWeatherToRain();
                 weather_Controller.Update();
                 break;
             case "Granizado":
+                weather_Controller.ExitCurrentWeather(5);
                 weather_Controller.ChangeWeatherToSnow();
                 weather_Controller.Update();
                 break;
             case "Nublado":
+                weather_Controller.ExitCurrentWeather(2);
                 weather_Controller.ChangeWeatherToCloudy();
                 weather_Controller.Update();
                 break;
